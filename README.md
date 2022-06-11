@@ -82,6 +82,13 @@ the tool being used is called [Colab-Convert](https://github.com/MSFTserver/cola
 * Horizontal and Vertical symmetry
 * Addition of ViT-L/14@336px model (requires high VRAM)
 
+#### v5.3.1 Update: Jun 11th 2022 - InconsolableCellist
+
+* Forked 5.3 to add the ability to injest settings JSON files (the same ones that are saved) for easier batch processing
+* Stripped out features I personally don't want and were cluttering up the code: animation, VR, and turbo modes
+* Organized the code, including removing cluttered comments and stripping out Jupyter-related organization 
+
+
 ## Notebook Provenance 
 
 Original notebook by Katherine Crowson (https://github.com/crowsonkb, https://twitter.com/RiversHaveWings). It uses either OpenAI's 256x256 unconditional ImageNet or Katherine Crowson's fine-tuned 512x512 diffusion model (https://github.com/openai/guided-diffusion), together with CLIP (https://github.com/openai/CLIP) to connect text prompts with images.
@@ -95,6 +102,8 @@ Vark added code to load in multiple Clip models at once, which all prompts are e
 The latest zoom, pan, rotation, and keyframes features were taken from Chigozie Nri's VQGAN Zoom Notebook (https://github.com/chigozienri, https://twitter.com/chigozienri)
 
 Advanced DangoCutn Cutout method is also from Dango223.
+
+This version is forked by InconsolableCellist to mostly just serve as a personal project with changes that I find are quality-of-life improvements, like batch processing JSON and fixing cluttered code. It's also intended to not be run in Jupyter now
 
 --
 
