@@ -31,7 +31,6 @@ from ipywidgets import Output
 from torch import nn
 from torch.nn import functional as F
 from tqdm.notebook import tqdm
-from CLIP import clip
 
 PROJECT_DIR = os.path.abspath(os.getcwd())
 USE_ADABINS = True
@@ -45,7 +44,8 @@ MODEL_PATH = f'{ROOT_PATH}/models'
 
 INIT_DIR_PATH = f'{ROOT_PATH}/init_images'
 createPath(INIT_DIR_PATH)
-OUT_DIR_PATH = f'{ROOT_PATH}/images_out'
+OUT_DIR_PATH = Path("Z:/Documents/Images of Life/Disco Diffusion")
+
 
 createPath(OUT_DIR_PATH)
 
@@ -1106,6 +1106,41 @@ args['cut_overview'] = eval(args['cut_overview'])
 args['cut_innercut'] = eval(args['cut_innercut'])
 args['cut_icgray_p'] = eval(args['cut_icgray_p'])
 args['cut_ic_pow'] = eval(str(args['cut_ic_pow']))
+
+def get_logistic_overview(max_cuts=10):
+    def logistic(x, L=1, x_0=0, k=1):
+        return L / (1 + np.exp(-k * (x - x_0)))
+
+    x = np.linspace(start=-10, stop=10, num=1000)
+    y = logistic(x, L=1, x_0=0, k=1.0)
+    y = (y * -1) + 1
+    x = (x + 15) / 23
+
+    for i in range(len(x)):
+        if y[i] < 0.3:
+            y[i] = 0.3
+        y[i] = int(y[i]*max_cuts)
+    return y.astype(int).tolist()
+
+def get_logistic_inner(max_cuts=10):
+    def logistic(x, L=1, x_0=0, k=1):
+        return L / (1 + np.exp(-k * (x - x_0)))
+
+    x = np.linspace(start=-10, stop=10, num=1000)
+    y = logistic(x, L=1, x_0=0, k=1.0)
+    x = (x + 15) / 23
+
+    for i in range(len(x)):
+        if y[i] < 0.3:
+            y[i] = 0.3
+        y[i] = int(y[i]*max_cuts)
+    return y.astype(int).tolist()
+
+
+if 'override_cutn_schedule' in args and args['override_cutn_schedule'] is True:
+    print(f'Using override cutn schedule')
+    args['cut_overview'] = get_logistic_overview()
+    args['cut_inner'] = get_logistic_inner()
 
 args = SimpleNamespace(**args)
 use_checkpoint = True
