@@ -13,7 +13,7 @@ settings = [
 fav_artists = [
     "Tom Bagshaw", "Miyazaki", "Caspar David Friedrich",
     "Quentin Mabille", "Ivan Konstantinovich Aivazovsky","Makoto Shinkai", "Eugene Korolev"
-    "Moebius", "laloux"
+    "Moebius", "laloux", "Carlos Ortega Elizalde"
 ]
 # artists = [
 #     "Leegan Koo", "Simon Stålenhag", "James Jean", "Boris Pelcer", "eugene korolev", "Olga Kim", "ismail inceoglu",
@@ -30,7 +30,7 @@ fav_artists = [
 #     "sung choi", "victor hugo harmatiuk", "Min Guen", "Paul Chadeisson", "Jaime Jasso", "Jonathan Berube",
 #     "Steven Cormann", "Jaime Jasso", "Thu Berchs", "Terraform Studios", "Daniel Dana", "Erik van Helvoirt", "Luc Begin",
 #     "Sanhanat Suwanwised", "Hossein Diba", "Raf Grassetti", "Hadi Karimi", "Frank Tzeng", "Şefki Ibrahim",
-#     "Carlos Ortega Elizalde", "Victor Hugo", "James Gurney", "Mark Simonetti", "Katsuhiro Otomo", "Yoshitaka Amano",
+#     "Victor Hugo", "James Gurney", "Mark Simonetti", "Katsuhiro Otomo", "Yoshitaka Amano",
 #     "vance kovac", "Arnold Böcklin", "Fitz Hugh Lane", "Koen Wijffelaars", "Ian McQue", "Jan Urschel", "Craig Mullins",
 #     "Ivan Konstantinovich Aivazovsky", "nadia hurianova", "Luke berliner", "quentin mabille", "Liang Mark",
 #     "andrei riabovitchev", "john burton" "giorgi simeonov", "mathias zamecki", "Lloyd Allan", "John Stephens",
@@ -106,10 +106,13 @@ fav_artists = [
 
 
 prompts = []
+common_prompts = []
 
 for x in range(1, 50):
     with open('prompts.json', 'r') as f:
-        prompts = json.load(f)['memes']
+        data = json.load(f)
+        prompts = data['memes']
+        common_prompts = data['common_prompts']
     for prompt in prompts:
         p = {}
         with open(settings[0], 'r') as f:
@@ -119,18 +122,23 @@ for x in range(1, 50):
         cgs *= 15000
         p['clip_guidance_scale'] = int(cgs)
         p['tv_scale'] = random.randint(200, 700)
-        p['text_prompts']['0'][0] = f"{prompt['prompt']}, trending on artstation"
         if random.randint(0, 1) == 0:
             p['use_secondary_model'] = False
         else:
             p['use_secondary_model'] = True
-        # if random.randint(0, 1) == 0:
-        #     p['text_prompts']['0'].append(f"by {random.choice(fav_artists)}")
 
         if 'overrides' in prompt:
             for key, value in prompt['overrides'].items():
                 p[key] = value
                 print(f'overriding {key} to {value}')
+
+        if 'add_artist' in prompt and prompt['add_artist'] == True:
+            new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on artstation' ]
+        else:
+            new_prompt = [ f'{prompt["prompt"]}, trending on Artstation' ]
+
+        for c in common_prompts:
+            new_prompt.append(c)
 
         with open(settings[0], 'w') as f:
             json.dump(p, f)
