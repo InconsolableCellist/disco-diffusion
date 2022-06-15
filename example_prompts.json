@@ -3,6 +3,10 @@
     "dof:-0.9",
     "f/11:0.9"
   ],
+  "defaults":{
+    "width": 1280,
+    "height": 720
+  },
   "memes": [
     {
       "prompt": "Beautiful painting of a doge"
@@ -10,6 +14,14 @@
     {
       "prompt": "Beautiful landscape painting of a building",
       "use_artist": true
+    },
+    {
+      "prompt": "Movie poster for an action movie starring a piece of bread",
+      "overrides": {
+        "width": 1024,
+        "height": 1708
+      }
+
     }
   ]
 }

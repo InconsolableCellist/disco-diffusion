@@ -131,6 +131,11 @@ for x in range(1, 50):
         else:
             p['use_secondary_model'] = True
 
+        if 'defaults' in prompt:
+            for key, value in prompt['defaults'].items():
+                p[key] = value
+                print(f'setting default {key} to {value}')
+
         if 'overrides' in prompt:
             for key, value in prompt['overrides'].items():
                 p[key] = value
