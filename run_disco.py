@@ -140,6 +140,7 @@ for x in range(1, 50):
         for c in common_prompts:
             new_prompt.append(c)
 
+        p['text_prompts']['0'] = new_prompt
         with open(settings[0], 'w') as f:
             json.dump(p, f)
         os.system("python disco.py \"" + settings[0] + "\"")
