@@ -141,19 +141,23 @@ for x in range(1, 50):
                 p[key] = value
                 print(f'overriding {key} to {value}')
 
-        if 'add_artist' in prompt and prompt['add_artist'] == True:
-            if 'artist_category' in prompt:
-                if prompt['artist_category'] == "anime":
-                    new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation']
+        # If the prompt is a list we don't modify it at all, and we assume it's already fully formed
+        if not isinstance(prompt['prompt'], list):
+            if 'add_artist' in prompt and prompt['add_artist'] == True:
+                if 'artist_category' in prompt:
+                    if prompt['artist_category'] == "anime":
+                        new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation:2']
+                else:
+                    new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation:2' ]
             else:
-                new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation' ]
+                new_prompt = [ f'{prompt["prompt"]}, trending on Artstation' ]
+            for c in common_prompts:
+                new_prompt.append(c)
+            p['text_prompts']['0'] = new_prompt
+
         else:
-            new_prompt = [ f'{prompt["prompt"]}, trending on Artstation' ]
+            p['text_prompts']['0'] = prompt['prompt']
 
-        for c in common_prompts:
-            new_prompt.append(c)
-
-        p['text_prompts']['0'] = new_prompt
         with open(settings[0], 'w') as f:
             json.dump(p, f)
         os.system("python disco.py \"" + settings[0] + "\"")
