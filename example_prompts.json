@@ -1,0 +1,15 @@
+{
+  "common_prompts": [
+    "dof:-0.9",
+    "f/11:0.9"
+  ],
+  "memes": [
+    {
+      "prompt": "Beautiful painting of a doge"
+    },
+    {
+      "prompt": "Beautiful landscape painting of a building",
+      "use_artist": true
+    }
+  ]
+}
