@@ -15,6 +15,10 @@ fav_artists = [
     "Quentin Mabille", "Ivan Konstantinovich Aivazovsky","Makoto Shinkai", "Eugene Korolev"
     "Moebius", "laloux", "Carlos Ortega Elizalde"
 ]
+
+artists_anime = [
+    "makoto Shinkai", "Hiroshi Yoshida", "Sin jong hun", "Miyazaki", "Ivan Bilibin",  "Studio Ghibli"
+]
 # artists = [
 #     "Leegan Koo", "Simon Stålenhag", "James Jean", "Boris Pelcer", "eugene korolev", "Olga Kim", "ismail inceoglu",
 #     "ulysse verhassel", "francisco martin", "henry wong", "axel sauerwald", "alexandr poda", "ingram schell",
@@ -133,7 +137,11 @@ for x in range(1, 50):
                 print(f'overriding {key} to {value}')
 
         if 'add_artist' in prompt and prompt['add_artist'] == True:
-            new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on artstation' ]
+            if 'artist_category' in prompt:
+                if prompt['artist_category'] == "anime":
+                    new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation']
+            else:
+                new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation' ]
         else:
             new_prompt = [ f'{prompt["prompt"]}, trending on Artstation' ]
 
