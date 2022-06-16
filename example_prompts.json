@@ -1,9 +1,22 @@
 {
   "common_prompts": [
     "dof:-0.9",
-    "f/11:0.9"
+    "f/11:0.9",
+    "colorful, vivid:1",
+    "by Mark Simonetii and James Gurney, Blizard artists:2"
   ],
   "defaults":{
+    "ViTB32": true,
+    "ViTB16": true,
+    "ViTL14": true,
+    "ViTL14_336": false,
+    "RN101": true,
+    "RN50": true,
+    "RN50x4": false,
+    "RN50x16": true,
+    "RN50x64": false,
+    "cutn_batches": 3,
+    "cutn": 22,
     "width": 1280,
     "height": 720
   },
@@ -13,7 +26,7 @@
     },
     {
       "prompt": "Beautiful landscape painting of a building",
-      "use_artist": true
+      "add_artist": true
     },
     {
       "prompt": "Movie poster for an action movie starring a piece of bread",

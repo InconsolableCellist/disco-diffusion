@@ -111,12 +111,18 @@ artists_anime = [
 
 prompts = []
 common_prompts = []
+defaults = {}
+overrides = {}
 
 for x in range(1, 50):
     with open('prompts.json', 'r') as f:
         data = json.load(f)
         prompts = data['memes']
         common_prompts = data['common_prompts']
+        if 'defaults' in data:
+            defaults = data['defaults']
+        if 'overrides' in data:
+            overrides = data['overrides']
     for prompt in prompts:
         p = {}
         with open(settings[0], 'r') as f:
@@ -131,26 +137,24 @@ for x in range(1, 50):
         else:
             p['use_secondary_model'] = True
 
-        if 'defaults' in prompt:
-            for key, value in prompt['defaults'].items():
-                p[key] = value
-                print(f'setting default {key} to {value}')
+        for key, value in defaults.items():
+            p[key] = value
+            print(f'setting default {key} to {value}')
 
-        if 'overrides' in prompt:
-            for key, value in prompt['overrides'].items():
-                p[key] = value
-                print(f'overriding {key} to {value}')
+        if 'overrides' in overrides.items():
+            p[key] = value
+            print(f'overriding {key} to {value}')
 
         # If the prompt is a list we don't modify it at all, and we assume it's already fully formed
         if not isinstance(prompt['prompt'], list):
             if 'add_artist' in prompt and prompt['add_artist'] == True:
                 if 'artist_category' in prompt:
                     if prompt['artist_category'] == "anime":
-                        new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation:2']
+                        new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation:4']
                 else:
-                    new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation:2' ]
+                    new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation:4' ]
             else:
-                new_prompt = [ f'{prompt["prompt"]}, trending on Artstation' ]
+                new_prompt = [ f'{prompt["prompt"]}, trending on Artstation:4' ]
             for c in common_prompts:
                 new_prompt.append(c)
             p['text_prompts']['0'] = new_prompt
