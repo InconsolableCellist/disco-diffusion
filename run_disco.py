@@ -19,6 +19,10 @@ fav_artists = [
 artists_anime = [
     "makoto Shinkai", "Hiroshi Yoshida", "Sin jong hun", "Miyazaki", "Ivan Bilibin",  "Studio Ghibli"
 ]
+
+artists_illustration = [
+    "fernando chamarelli", "matt mills", "Martin Johnson Heade"
+]
 # artists = [
 #     "Leegan Koo", "Simon Stålenhag", "James Jean", "Boris Pelcer", "eugene korolev", "Olga Kim", "ismail inceoglu",
 #     "ulysse verhassel", "francisco martin", "henry wong", "axel sauerwald", "alexandr poda", "ingram schell",
@@ -121,8 +125,6 @@ for x in range(1, 50):
         common_prompts = data['common_prompts']
         if 'defaults' in data:
             defaults = data['defaults']
-        if 'overrides' in data:
-            overrides = data['overrides']
     for prompt in prompts:
         p = {}
         with open(settings[0], 'r') as f:
@@ -141,9 +143,10 @@ for x in range(1, 50):
             p[key] = value
             print(f'setting default {key} to {value}')
 
-        if 'overrides' in overrides.items():
-            p[key] = value
-            print(f'overriding {key} to {value}')
+        if 'overrides' in prompt:
+            for key, value in prompt['overrides'].items():
+                p[key] = value
+                print(f'overriding {key} to {value}')
 
         # If the prompt is a list we don't modify it at all, and we assume it's already fully formed
         if not isinstance(prompt['prompt'], list):
@@ -151,6 +154,8 @@ for x in range(1, 50):
                 if 'artist_category' in prompt:
                     if prompt['artist_category'] == "anime":
                         new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_anime)}, trending on Artstation:4']
+                    if prompt['artist_category'] == "illustration":
+                        new_prompt = [f'{prompt["prompt"]} by {random.choice(artists_illustration)}, trending on Artstation:4']
                 else:
                     new_prompt = [ f'{prompt["prompt"]} by {random.choice(fav_artists)}, trending on Artstation:4' ]
             else:
