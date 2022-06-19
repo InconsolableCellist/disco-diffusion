@@ -139,16 +139,19 @@ for x in range(1, 50):
                 p[key] = value
                 print(f'overriding {key} to {value}')
 
+        if not isinstance(prompt['prompt'], list):
+            prompt['prompt'] = [prompt['prompt']]
+
         if 'add_artist' in prompt and prompt['add_artist'] == True:
             if 'artist_category' in prompt:
                 if prompt['artist_category'] == "anime":
-                    prompt['prompt'].append(f'by {random.choice(artists_anime)}:2')
+                    prompt['prompt'].append(f'by {random.choice(artists_anime)}:4')
                 if prompt['artist_category'] == "illustration":
-                    prompt['prompt'].append(f'by {random.choice(artists_illustration)}:2')
+                    prompt['prompt'].append(f'by {random.choice(artists_illustration)}:4')
                 if prompt['artist_category'] == "favorites":
-                    prompt['prompt'].append(f'by {random.choice(artists_favorite)}:2')
+                    prompt['prompt'].append(f'by {random.choice(artists_favorite)}:4')
             else:
-                prompt['prompt'].append(f'by {random.choice(artists)}:2')
+                prompt['prompt'].append(f'by {random.choice(artists)}:4')
 
         for c in common_prompts:
             prompt['prompt'].append(c)
