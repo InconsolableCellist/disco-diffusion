@@ -13,7 +13,7 @@ settings = [
 artists_favorite = [
     "Tom Bagshaw", "Miyazaki", "Caspar David Friedrich",
     "Quentin Mabille", "Ivan Konstantinovich Aivazovsky","Makoto Shinkai", "Eugene Korolev"
-    "Moebius", "laloux", "Carlos Ortega Elizalde"
+    "Moebius", "laloux", "Carlos Ortega Elizalde", "Rafał Olbiński"
 ]
 
 artists_anime = [
@@ -122,7 +122,7 @@ for x in range(1, 50):
             p = json.load(f)
         p['init_image'] = f'init_images\\init{random.randint(1,33)}.jpg'
         cgs = abs(numpy.random.normal(loc=0, scale=1, size=1))
-        cgs *= 15000
+        cgs *= 30000
         p['clip_guidance_scale'] = int(cgs)
         p['tv_scale'] = random.randint(200, 700)
         if random.randint(0, 1) == 0:
@@ -136,6 +136,8 @@ for x in range(1, 50):
 
         if 'overrides' in prompt:
             for key, value in prompt['overrides'].items():
+                if key == "init_image" and isinstance(value, list):
+                    value = random.choice(value)
                 p[key] = value
                 print(f'overriding {key} to {value}')
 
