@@ -44,7 +44,7 @@ MODEL_PATH = f'{ROOT_PATH}/models'
 
 INIT_DIR_PATH = f'{ROOT_PATH}/init_images'
 createPath(INIT_DIR_PATH)
-OUT_DIR_PATH = Path("Z:/Documents/Images of Life/Disco Diffusion")
+OUT_DIR_PATH = Path("y:/Documents/Images of Life/Disco Diffusion")
 
 
 createPath(OUT_DIR_PATH)
@@ -1139,8 +1139,8 @@ def get_logistic_inner(max_cuts=10):
 
 if 'override_cutn_schedule' in args and args['override_cutn_schedule'] is True:
     print(f'Using override cutn schedule')
-    args['cut_overview'] = get_logistic_overview()
-    args['cut_inner'] = get_logistic_inner()
+    args['cut_overview'] = get_logistic_overview(max_cuts=args['cutn'])
+    args['cut_inner'] = get_logistic_inner(max_cuts=args['cutn'])
 
 args = SimpleNamespace(**args)
 use_checkpoint = True
