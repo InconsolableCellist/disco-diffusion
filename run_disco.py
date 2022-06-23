@@ -1,12 +1,6 @@
-import json
-import os
-import random
-
-import numpy
+import json, os, random, numpy
 
 settings = [
-    # "2.json",
-    # "roomba.json"
     "memes2.json"
 ]
 
@@ -56,66 +50,22 @@ artists = [
     "Lucas Mendonça" "josan gonzalez", "Archan Nair", "Viktoria Gavrilenko", "Everett Kinstler", "KwangHo Shin",
     "Abdelrahman Taymour"]
 
-# for artist in artists:
-#     p = {}
-#     with open(prompts[0], 'r') as f:
-#         p = json.load(f)
-#     p['text_prompts']['0'][1] = f"by {artist}"
-#     with open(prompts[0], 'w') as f:
-#         json.dump(p, f, indent=4)
-#     os.system("python disco.py \"" + prompts[0] + "\"")
-
-# for x in range(1, 33):
-#     p = {}
-#     with open(prompts[0], 'r') as f:
-#         p = json.load(f)
-#     p['init_image'] = f'init_images\\init{x}.jpg'
-#     p['clip_guidance_scale'] = random.randint(1, 50000)
-#     p['tv_scale'] = random.randint(0, 1000)
-#     with open(prompts[0], 'w') as f:
-#         json.dump(p, f)
-#     os.system("python disco.py \"" + prompts[0] + "\"")
-
-# x = 0
-# for prompt in prompts:
-#     print("\n" + prompt)
-#     with open(prompt, "r") as f:
-#         p = json.load(f)
-#         p['init_image'] = f'init_images\\init{x}.jpg'
-#         x+=1
-#
-#     os.system("python disco.py \"" + prompt + "\"")
-#
-# for fav_artist in fav_artists:
-#     p = {}
-#     with open(prompts[0], 'r') as f:
-#         p = json.load(f)
-#     p['text_prompts']['0'][1] = f"by {fav_artist}"
-#     init_num = random.randint(1, 33)
-#     p['init_image'] = f'init_images\\init{init_num}.jpg'
-#     with open(prompts[0], 'w') as f:
-#         json.dump(p, f, indent=4)
-#     os.system("python disco.py \"" + prompts[0] + "\"")
-
-# for prompt in prompts:
-#     os.system("python disco.py \"" + prompt + "\"")
-
-
-#
-
-
 prompts = []
 common_prompts = []
 defaults = {}
 overrides = {}
+presets = {}
 
 for x in range(1, 50):
     with open('prompts.json', 'r') as f:
         data = json.load(f)
         prompts = data['memes']
+        # prompts = data['reddit_posts']
         common_prompts = data['common_prompts']
         if 'defaults' in data:
             defaults = data['defaults']
+        if 'presets' in data:
+            presets = data['presets']
     for prompt in prompts:
         p = {}
         with open(settings[0], 'r') as f:
@@ -133,6 +83,17 @@ for x in range(1, 50):
         for key, value in defaults.items():
             p[key] = value
             print(f'setting default {key} to {value}')
+
+        if 'preset' in prompt:
+            preset = prompt['preset']
+            if preset in presets:
+                print(f"Prompt requested preset {preset}, which we found")
+                for key, value in presets[preset]['defaults'].items():
+                    print(f"\tPreset {preset} is overriding default {key} with {value}")
+                    p[key] = value
+            else:
+                print(f"The prompt requested preset {preset}, but didn't find it")
+
 
         if 'overrides' in prompt:
             for key, value in prompt['overrides'].items():
