@@ -1091,6 +1091,9 @@ clip_denoised = args['clip_denoised']
 fuzzy_prompt = args['fuzzy_prompt']
 rand_mag = args['rand_mag']
 
+batchFolder = f'{OUT_DIR_PATH}/{batch_name}'
+createPath(batchFolder)
+
 if intermediate_saves and intermediates_in_subfolder is True:
     partialFolder = f'{batchFolder}/partials'
     createPath(partialFolder)
@@ -1324,8 +1327,6 @@ model_config.update({
     'diffusion_steps': diffusion_steps,
 })
 
-batchFolder = f'{OUT_DIR_PATH}/{batch_name}'
-createPath(batchFolder)
 
 
 video_init_path = "training.mp4"
